@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { employees, aantalGekend } from '../data/employees';
+import { employees, aantalGekend, isAllround } from '../data/employees';
 import { stations } from '../data/stations';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { StatCard } from '../components/common/StatCard';
@@ -9,16 +9,21 @@ import { StatCard } from '../components/common/StatCard';
 export function Training() {
   const [zoekterm, setZoekterm] = useState('');
 
-  const { totaalGekend, gemiddeld, besteStation } = useMemo(() => {
+  const { totaalGekend, gemiddeld, besteStation, aantalAllround } = useMemo(() => {
     const totaal = employees.reduce((som, medewerker) => som + aantalGekend(medewerker), 0);
     const perStation = stations.map((station) => ({
       station,
       aantal: employees.filter((medewerker) =>
-        medewerker.stations.some((entry) => entry.stationId === station.id && entry.status === 'kent'),
+        medewerker.stations.some((entry) => entry.stationId === station.id && entry.score !== null),
       ).length,
     }));
     const beste = perStation.reduce((a, b) => (b.aantal > a.aantal ? b : a));
-    return { totaalGekend: totaal, gemiddeld: totaal / employees.length, besteStation: beste };
+    return {
+      totaalGekend: totaal,
+      gemiddeld: totaal / employees.length,
+      besteStation: beste,
+      aantalAllround: employees.filter(isAllround).length,
+    };
   }, []);
 
   const gefilterd = useMemo(() => {
@@ -32,19 +37,19 @@ export function Training() {
       <SectionHeader
         kicker="Sectie 3"
         titel="Training"
-        omschrijving="70 medewerkers, elk met een eigen pagina. Bekijk per medewerker welke stations al beheerst worden en welke nog geleerd moeten worden."
+        omschrijving={`${employees.length} medewerkers, elk met een eigen pagina. Bekijk per medewerker welke stations al beheerst worden en welke nog geleerd moeten worden.`}
       />
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4">
         <StatCard icoon="🧑‍🍳" waarde={employees.length} label="Medewerkers in training" />
+        <StatCard icoon="⭐" waarde={aantalAllround} label="Allround medewerkers" />
         <StatCard icoon="🗺️" waarde={stations.length} label="Stations totaal" />
-        <StatCard icoon="✅" waarde={totaalGekend} label="Beheerste stations, teambreed" />
-        <StatCard icoon="📈" waarde={gemiddeld} decimals={1} label="Gemiddeld per medewerker" />
+        <StatCard icoon="📈" waarde={gemiddeld} decimals={1} label="Gemiddeld gekende stations" />
       </div>
 
       <p className="mt-3 text-sm opacity-50">
         Sterkste station: <span className="text-mc-gold">{besteStation.station.naam}</span> ({besteStation.aantal} van{' '}
-        {employees.length} medewerkers)
+        {employees.length} medewerkers) · {totaalGekend} beheerste stations teambreed
       </p>
 
       <div className="mt-10">
@@ -60,6 +65,7 @@ export function Training() {
         {gefilterd.map((medewerker, i) => {
           const gekend = aantalGekend(medewerker);
           const percentage = Math.round((gekend / stations.length) * 100);
+          const allround = isAllround(medewerker);
           return (
             <motion.div
               key={medewerker.id}
@@ -85,7 +91,7 @@ export function Training() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold">{medewerker.naam}</p>
-                  <p className="text-xs opacity-50">{medewerker.rol}</p>
+                  <p className="text-xs opacity-50">{allround ? '⭐ Allround' : '🎯 Nog in training'}</p>
                   <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-mc-gold to-mc-red transition-all duration-700"

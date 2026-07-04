@@ -12,7 +12,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "embed:artifact-assets": "node --experimental-strip-types scripts/embed-artifact-assets.mjs",
-    "build:artifact": "npm run embed:artifact-assets && tsc -b && vite build --config vite.artifact.config.ts"
+    "build:artifact": "npm run embed:artifact-assets && tsc -b && vite build --config vite.artifact.config.ts",
+    "import:training-data": "node scripts/import-training-data.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

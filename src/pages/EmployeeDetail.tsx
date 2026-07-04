@@ -1,13 +1,10 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { getEmployeeById, aantalGekend } from '../data/employees';
+import { getEmployeeById, aantalGekend, gemiddeldeScore, isAllround } from '../data/employees';
 import { stations } from '../data/stations';
 import { ProgressRing } from '../components/common/ProgressRing';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { AnimatedCounter } from '../components/common/AnimatedCounter';
-import type { StationStatus } from '../types';
-
-const STATUS_VOLGORDE: StationStatus[] = ['kent', 'leert', 'wil_leren', 'nog_niet'];
 
 export function EmployeeDetail() {
   const { id } = useParams<{ id: string }>();
@@ -16,17 +13,10 @@ export function EmployeeDetail() {
   if (!medewerker) return <Navigate to="/training" replace />;
 
   const gekend = aantalGekend(medewerker);
+  const nogTeLeren = stations.length - gekend;
   const percentage = (gekend / stations.length) * 100;
-  const perStatus = STATUS_VOLGORDE.map((status) => ({
-    status,
-    aantal: medewerker.stations.filter((entry) => entry.status === status).length,
-  }));
-
-  const inDienstSinds = new Date(medewerker.inDienstSinds).toLocaleDateString('nl-NL', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const gemScore = gemiddeldeScore(medewerker);
+  const allround = isAllround(medewerker);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 animate-in">
@@ -49,23 +39,27 @@ export function EmployeeDetail() {
 
         <div className="flex-1">
           <h1 className="text-2xl font-extrabold sm:text-3xl">{medewerker.naam}</h1>
-          <p className="mt-1 text-sm text-mc-gold">{medewerker.rol}</p>
-          <p className="mt-1 text-sm opacity-50">In dienst sinds {inDienstSinds}</p>
+          <p className="mt-1 text-sm text-mc-gold">{allround ? '⭐ Allround medewerker' : '🎯 Nog in training'}</p>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {perStatus.map(({ status, aantal }) => (
-              <div key={status} className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-center">
-                <p className="text-xl font-extrabold tabular-nums">
-                  <AnimatedCounter value={aantal} duration={900} />
-                </p>
-                <p className="text-[11px] opacity-50">
-                  {status === 'kent' && 'Gekend'}
-                  {status === 'leert' && 'In training'}
-                  {status === 'wil_leren' && 'Wil leren'}
-                  {status === 'nog_niet' && 'Nog niet gestart'}
-                </p>
-              </div>
-            ))}
+          <div className="mt-4 grid grid-cols-3 gap-3">
+            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-center">
+              <p className="text-xl font-extrabold tabular-nums">
+                <AnimatedCounter value={gekend} duration={900} />
+              </p>
+              <p className="text-[11px] opacity-50">Gekende stations</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-center">
+              <p className="text-xl font-extrabold tabular-nums">
+                <AnimatedCounter value={nogTeLeren} duration={900} />
+              </p>
+              <p className="text-[11px] opacity-50">Nog te leren</p>
+            </div>
+            <div className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-center">
+              <p className="text-xl font-extrabold tabular-nums">
+                <AnimatedCounter value={gemScore * 100} duration={900} decimals={0} suffix="%" />
+              </p>
+              <p className="text-[11px] opacity-50">Gem. score</p>
+            </div>
           </div>
         </div>
 
@@ -92,7 +86,7 @@ export function EmployeeDetail() {
                   <p className="text-xs opacity-50">{station.omschrijving}</p>
                 </div>
               </div>
-              {entry && <StatusBadge status={entry.status} />}
+              <StatusBadge score={entry ? entry.score : null} />
             </motion.div>
           );
         })}

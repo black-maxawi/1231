@@ -1,5 +1,3 @@
-export type StationStatus = 'kent' | 'leert' | 'wil_leren' | 'nog_niet';
-
 export interface Station {
   id: string;
   naam: string;
@@ -9,16 +7,13 @@ export interface Station {
 
 export interface EmployeeStationEntry {
   stationId: string;
-  status: StationStatus;
+  /** Getrainde vaardigheidsscore 0–1, of null als het station nog niet getraind is. */
+  score: number | null;
 }
-
-export type EmployeeRol = 'Medewerker' | 'Shiftleider' | 'Trainer';
 
 export interface Employee {
   id: string;
   naam: string;
-  rol: EmployeeRol;
-  inDienstSinds: string;
   avatarKleur: string;
   stations: EmployeeStationEntry[];
 }

@@ -4,29 +4,31 @@ import { employees, aantalGekend } from '../data/employees';
 import { stations } from '../data/stations';
 import { StatCard } from '../components/common/StatCard';
 
-const SECTIES = [
-  {
-    to: '/voorraadbeheer',
-    icoon: '📦',
-    titel: 'Voorraadbeheer',
-    omschrijving: "Foto's van magazijn en koelcellen, plus het actuele voorraadoverzicht — direct inzichtelijk.",
-    kleur: 'from-mc-red/25 via-mc-red/5 to-transparent',
-  },
-  {
-    to: '/personeel',
-    icoon: '🧑‍🤝‍🧑',
-    titel: 'Personeel',
-    omschrijving: "Teamfoto's en het personeelsrooster, overzichtelijk in de browser te bekijken.",
-    kleur: 'from-sky-500/25 via-sky-500/5 to-transparent',
-  },
-  {
-    to: '/training',
-    icoon: '🎓',
-    titel: 'Training',
-    omschrijving: '70 medewerkers, elk met een eigen pagina: welke stations kennen ze, en welke willen ze nog leren?',
-    kleur: 'from-mc-gold/25 via-mc-gold/5 to-transparent',
-  },
-];
+function secties(aantalMedewerkers: number) {
+  return [
+    {
+      to: '/voorraadbeheer',
+      icoon: '📦',
+      titel: 'Voorraadbeheer',
+      omschrijving: "Foto's van magazijn en koelcellen, plus het actuele voorraadoverzicht — direct inzichtelijk.",
+      kleur: 'from-mc-red/25 via-mc-red/5 to-transparent',
+    },
+    {
+      to: '/personeel',
+      icoon: '🧑‍🤝‍🧑',
+      titel: 'Personeel',
+      omschrijving: "Teamfoto's en het personeelsrooster, overzichtelijk in de browser te bekijken.",
+      kleur: 'from-sky-500/25 via-sky-500/5 to-transparent',
+    },
+    {
+      to: '/training',
+      icoon: '🎓',
+      titel: 'Training',
+      omschrijving: `${aantalMedewerkers} medewerkers, elk met een eigen pagina: welke stations kennen ze, en welke moeten ze nog leren?`,
+      kleur: 'from-mc-gold/25 via-mc-gold/5 to-transparent',
+    },
+  ];
+}
 
 export function Home() {
   const totaalGekend = employees.reduce((som, medewerker) => som + aantalGekend(medewerker), 0);
@@ -69,7 +71,7 @@ export function Home() {
         </div>
 
         <div className="mx-auto mt-14 grid max-w-5xl gap-5 sm:grid-cols-3">
-          {SECTIES.map((sectie, i) => (
+          {secties(employees.length).map((sectie, i) => (
             <motion.div
               key={sectie.to}
               initial={{ opacity: 0, y: 24 }}

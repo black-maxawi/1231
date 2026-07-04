@@ -1,73 +1,81 @@
+// Gegenereerd door scripts/import-training-data.mjs uit
+// public/data/training/allround-overzicht-utrecht.xlsx — draai het script opnieuw
+// na een update van dat werkblad. Handmatige aanpassingen hier gaan dan verloren.
 import type { Station } from '../types';
+
+export const ALLROUND_DREMPEL = 10;
 
 export const stations: Station[] = [
   {
-    id: 'kassa-voorkant',
-    naam: 'Kassa Voorkant',
-    omschrijving: 'Bestellingen opnemen en afrekenen aan de balie.',
-    icoon: '🧾',
+    "id": "assembler",
+    "naam": "Assembler",
+    "omschrijving": "Broodjes samenstellen en verpakken.",
+    "icoon": "🥪"
   },
   {
-    id: 'drive-thru',
-    naam: 'Drive-thru',
-    omschrijving: 'Bestellingen opnemen en uitgeven bij de drive-thru.',
-    icoon: '🚗',
+    "id": "batch-cooker-friteuse",
+    "naam": "Batch Cooker Friteuse",
+    "omschrijving": "Grote batches friet en snacks frituren.",
+    "icoon": "🔥"
   },
   {
-    id: 'grill',
-    naam: 'Grill',
-    omschrijving: 'Vlees en kip bereiden op de grill.',
-    icoon: '🍔',
+    "id": "batch-cooker-grill",
+    "naam": "Batch Cooker Grill",
+    "omschrijving": "Vlees en kip in batches bereiden op de grill.",
+    "icoon": "🍔"
   },
   {
-    id: 'frituur',
-    naam: 'Frituur',
-    omschrijving: 'Friet en andere gefrituurde producten bereiden.',
-    icoon: '🍟',
+    "id": "dranken-tapper",
+    "naam": "Dranken Tapper",
+    "omschrijving": "Frisdrank en andere dranken tappen en klaarzetten.",
+    "icoon": "🥤"
   },
   {
-    id: 'assemblage',
-    naam: 'Assemblage',
-    omschrijving: 'Broodjes samenstellen en verpakken.',
-    icoon: '🥪',
+    "id": "expeditor",
+    "naam": "Expeditor",
+    "omschrijving": "Bestellingen controleren en samenvoegen voor uitgifte.",
+    "icoon": "📦"
   },
   {
-    id: 'mccafe',
-    naam: 'McCafé',
-    omschrijving: 'Koffie en dranken bereiden aan de McCafé.',
-    icoon: '☕',
+    "id": "friet",
+    "naam": "Friet",
+    "omschrijving": "Friet bereiden en op temperatuur houden.",
+    "icoon": "🍟"
   },
   {
-    id: 'voorraadbeheer',
-    naam: 'Voorraadbeheer',
-    omschrijving: 'Bevoorrading, tellingen en bestellingen beheren.',
-    icoon: '📦',
+    "id": "initiator",
+    "naam": "Initiator",
+    "omschrijving": "Het bestelproces starten en gasten verwelkomen.",
+    "icoon": "🚦"
   },
   {
-    id: 'bezorging',
-    naam: 'Bezorging',
-    omschrijving: 'McDelivery-bestellingen verwerken en klaarzetten.',
-    icoon: '🛵',
+    "id": "lobby",
+    "naam": "Lobby",
+    "omschrijving": "Het restaurant schoonhouden en gasten helpen.",
+    "icoon": "🧽"
   },
   {
-    id: 'lobby',
-    naam: 'Lobby & Schoonmaak',
-    omschrijving: 'Restaurant schoonhouden en klantvriendelijkheid in de lobby.',
-    icoon: '🧽',
+    "id": "mccafe",
+    "naam": "McCafé",
+    "omschrijving": "Koffie en dranken bereiden aan de McCafé.",
+    "icoon": "☕"
   },
   {
-    id: 'leidinggeven',
-    naam: 'Leidinggeven',
-    omschrijving: 'Een shift aansturen en het team coördineren.',
-    icoon: '⭐',
+    "id": "mcdelivery",
+    "naam": "McDelivery",
+    "omschrijving": "Bezorgbestellingen verwerken en klaarzetten.",
+    "icoon": "🛵"
   },
+  {
+    "id": "order-taker-counter",
+    "naam": "Order Taker Counter",
+    "omschrijving": "Bestellingen opnemen en afrekenen aan de kassa.",
+    "icoon": "🧾"
+  },
+  {
+    "id": "runner-presenter",
+    "naam": "Runner-Presenter",
+    "omschrijving": "Bestellingen naar gasten brengen en presenteren.",
+    "icoon": "🏃"
+  }
 ];
-
-export const statusVolgorde = ['kent', 'leert', 'wil_leren', 'nog_niet'] as const;
-
-export const statusLabels: Record<string, string> = {
-  kent: 'Kent het station',
-  leert: 'Is het aan het leren',
-  wil_leren: 'Wil het leren',
-  nog_niet: 'Nog niet gestart',
-};

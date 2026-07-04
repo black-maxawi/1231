@@ -35,6 +35,16 @@ Alles staat in `public/`, dus je hoeft niets te compileren om content te vervang
 - Stations (de McDonald's-werkplekken): `src/data/stations.ts`.
 - De 70 medewerkers worden gegenereerd in `src/data/employees.ts` met een vaste "seed", zodat de data stabiel blijft. Wil je echte namen en echte trainingsstatus per medewerker? Vervang de inhoud van `employees` daar door je eigen array (zelfde vorm: naam, rol, en per station een status `kent` / `leert` / `wil_leren` / `nog_niet`).
 
+## Live preview delen (Artifact)
+
+Wil je iemand het resultaat laten zien zonder dat ze iets hoeven te installeren? Bouw een enkel, volledig offline HTML-bestand (alle foto's en Excel-data zitten er als data ingebakken in, geen server nodig):
+
+```bash
+npm run build:artifact
+```
+
+Dit levert `dist-artifact/index.html` op — één bestand dat je overal kunt openen of hosten.
+
 ## Techniek
 
 - Vite + React + TypeScript + React Router

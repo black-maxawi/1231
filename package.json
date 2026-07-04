@@ -4,10 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "postinstall": "npm run embed:artifact-assets",
+    "predev": "npm run embed:artifact-assets",
+    "prebuild": "npm run embed:artifact-assets",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "embed:artifact-assets": "node --experimental-strip-types scripts/embed-artifact-assets.mjs",
+    "build:artifact": "npm run embed:artifact-assets && tsc -b && vite build --config vite.artifact.config.ts"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -26,6 +31,7 @@
     "oxlint": "^1.71.0",
     "tailwindcss": "^4.3.2",
     "typescript": "~6.0.2",
-    "vite": "^8.1.1"
+    "vite": "^8.1.1",
+    "vite-plugin-singlefile": "^2.3.3"
   }
 }

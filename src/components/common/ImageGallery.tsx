@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { GalleryImage } from '../../types';
+import { resolveImageSrc } from '../../lib/resolveImageSrc';
 
 function GalleryThumb({ image, onClick }: { image: GalleryImage; onClick: () => void }) {
   const [broken, setBroken] = useState(false);
@@ -18,7 +19,7 @@ function GalleryThumb({ image, onClick }: { image: GalleryImage; onClick: () => 
         </div>
       ) : (
         <img
-          src={image.src}
+          src={resolveImageSrc(image.src)}
           alt={image.titel}
           loading="lazy"
           onError={() => setBroken(true)}
@@ -60,7 +61,7 @@ export function ImageGallery({ images }: { images: GalleryImage[] }) {
               className="max-h-[85vh] max-w-3xl overflow-hidden rounded-2xl border border-white/10 bg-mc-ink"
               onClick={(event) => event.stopPropagation()}
             >
-              <img src={active.src} alt={active.titel} className="max-h-[75vh] w-full object-contain" />
+              <img src={resolveImageSrc(active.src)} alt={active.titel} className="max-h-[75vh] w-full object-contain" />
               <figcaption className="flex items-center justify-between gap-4 p-4 text-sm">
                 <span className="font-medium">{active.titel}</span>
                 <button

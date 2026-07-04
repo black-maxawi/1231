@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { WorkbookFile } from '../../types';
+import { embeddedWorkbooks } from '../../data/embeddedWorkbooks.generated';
 
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024;
 const MAX_ROWS_SHOWN = 1000;
@@ -46,6 +47,13 @@ function useWorkbookFromUrl(file: WorkbookFile): LoadState {
   useEffect(() => {
     let cancelled = false;
     setState({ status: 'laden' });
+
+    if (__ARTIFACT__) {
+      const sheets = embeddedWorkbooks[file.bestand];
+      if (sheets) setState({ status: 'klaar', workbook: { titel: file.titel, omschrijving: file.omschrijving, sheets } });
+      else setState({ status: 'ontbreekt' });
+      return;
+    }
 
     fetch(file.bestand)
       .then((response) => {

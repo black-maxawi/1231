@@ -35,7 +35,7 @@ export function Training() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 animate-in">
       <SectionHeader
-        kicker="Sectie 3"
+        kicker="Personeelsportaal"
         titel="Training"
         omschrijving={`${employees.length} medewerkers, elk met een eigen pagina. Bekijk per medewerker welke stations al beheerst worden en welke nog geleerd moeten worden.`}
       />
